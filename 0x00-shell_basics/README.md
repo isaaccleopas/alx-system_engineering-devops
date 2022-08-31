@@ -1,1 +1,1 @@
-readme for 0x00-shell_basics
+The script in this file displays the present working directory
