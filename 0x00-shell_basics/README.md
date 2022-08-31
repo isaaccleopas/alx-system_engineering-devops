@@ -1,1 +1,1 @@
-The script in this file displays the present working directory
+The scripts in the files are all executable
