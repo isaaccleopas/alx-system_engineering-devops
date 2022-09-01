@@ -1,2 +1,2 @@
 #!/bin/bash
-chown vincent:staff 100-change_owner_and_group/
+chown vincent:staff 0-iam_betty 1-who_am_i 10-mirror_permissions 11-directories_permissions 12-directory_permissions 13-change_group 17:03 2-groups 17:07 3-new_owner 5-execute 6-multiple_permissions 7-everybody 8-James_Bond 9-John_Doe README.md
