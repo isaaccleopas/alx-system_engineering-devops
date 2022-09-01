@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo chmod vincent:staff /0x01-shell_permissions
+chmod -R vincent:staff ./
