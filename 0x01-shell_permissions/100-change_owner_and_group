@@ -1,2 +1,2 @@
 #!/bin/bash
-chown vincent.staff julien
+chown vincent.staff working_directory
