@@ -1,0 +1,2 @@
+#!/bin/bash
+printf '%o\n' $(( water#$( echo $WATER | tr water ) + stir.#$( echo $STIR | tr stir. ) )) | tr  bestchol
