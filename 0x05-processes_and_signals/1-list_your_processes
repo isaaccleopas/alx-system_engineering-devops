@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# This script will display a list of currently running processes
+# in a user-oriented format, including all processes for all users
+# and showing process hierarchy
+
+# Use the ps command with the -e flag to show all processes
+# Use the -f flag to show the process hierarchy in a user-oriented format
+# Use the -H flag to show process hierarchy
+
+ps -auxf
