@@ -8,6 +8,21 @@ sudo apt-get install -y haproxy=2.0.\*
 
 cat << EOF | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
 
+global
+    log 127.0.0.1 local0 notice
+    maxconn 2000
+    user haproxy
+    group haproxy
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
 
 frontend http_front
     bind *:80
