@@ -6,24 +6,12 @@ sudo add-apt-repository ppa:vbernat/haproxy-2.0
 sudo apt-get update
 sudo apt-get install -y haproxy=2.0.\*
 
-cat << EOF | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
+echo "ENABLED=1" >> /etc/default/haproxy
+mv /etc/haproxy/haproxy.cfg{,.original}
+touch /etc/haproxy/haproxy.cfg
 
-global
-    log 127.0.0.1 local0 notice
-    maxconn 2000
-    user haproxy
-    group haproxy
-defaults
-    log     global
-    mode    http
-    option  httplog
-    option  dontlognull
-    retries 3
-    option redispatch
-    timeout connect  5000
-    timeout client  10000
-    timeout server  10000
-
+printf %s 
+"
 frontend http_front
     bind *:80
     mode http
@@ -34,7 +22,6 @@ backend http_back
     balance roundrobin
     server 54.152.246.245:80 check
     server 54.144.141.32:80 check
-
-EOF
+" >> /etc/haproxy/haproxy.cfg
 
 sudo service haproxy start
