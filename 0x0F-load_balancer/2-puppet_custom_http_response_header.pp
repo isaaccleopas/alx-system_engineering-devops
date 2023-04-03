@@ -1,27 +1,25 @@
 # Installs a Nginx server with custom HTTP header
 
 exec { 'install_nginx':
-  command => '/usr/bin/apt-get update && /usr/bin/apt-get install -y nginx',
-  path    => '/usr/bin',
-  creates => '/usr/sbin/nginx',
+  provider => shell,
+  command  => 'sudo apt-get update && sudo apt-get install -y nginx',
+  before   => Exec['enable server_tokens'],
 }
 
-file_line { 'enable server_tokens':
-  path    => '/etc/nginx/nginx.conf',
-  line    => 'server_tokens off;',
-  match   => '^#.*server_tokens off;',
-  replace => 'server_tokens off;',
+exec { 'enable server_tokens':
+  provider => shell,
+  command  => 'sudo sed -i "/^#.*server_tokens off;/s/^#//" /etc/nginx/nginx.conf',
+  before   => Exec['add_header'],
 }
 
-$hostname = $::hostname
-
-file { '/etc/nginx/sites-enabled/default':
-  ensure  => file,
-  content => "server {\n\tadd_header X-Served-By ${hostname};",
-  mode    => '0644',
+exec { 'add_header':
+  provider    => shell,
+  environment => ["HOST=${hostname}"],
+  command     => 'sudo sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOST\";/" /etc/nginx/nginx.conf',
+  before      => Exec['restart Nginx'],
 }
 
-service { 'nginx':
-  ensure => running,
-  enable => true,
+exec { 'restart Nginx':
+  provider => shell,
+  command  => 'sudo service nginx restart',
 }
