@@ -6,18 +6,19 @@ sudo add-apt-repository ppa:vbernat/haproxy-2.0
 sudo apt-get update
 sudo apt-get install -y haproxy=2.0.\*
 
-sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
-
 cat << EOF | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
 
-frontend http-in
-    bind *:80
-    default_backend servers
 
-backend servers
+frontend http_front
+    bind *:80
+    mode http
+    default_backend http_back
+
+backend http_back
+    mode http
     balance roundrobin
-    server web-01 [STUDENT_ID]-web-01:80 check
-    server web-02 [STUDENT_ID]-web-02:80 check
+    server 54.152.246.245:80 check
+    server 54.144.141.32:80 check
 
 EOF
 
