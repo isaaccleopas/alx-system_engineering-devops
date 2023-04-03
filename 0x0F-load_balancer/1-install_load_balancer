@@ -1,40 +1,44 @@
 #!/usr/bin/env bash
 #Installs and configures HAproxy in a load balancer server
 
-sudo apt-get install -y --no-install-recommends software-properties-common
-sudo add-apt-repository ppa:vbernat/haproxy-2.0
-sudo apt-get update
-sudo apt-get install -y haproxy=2.0.\*
+sudo apt update
+sudo apt install haproxy
 
-echo "ENABLED=1" >> /etc/default/haproxy
-mv /etc/haproxy/haproxy.cfg{,.original}
-touch /etc/haproxy/haproxy.cfg
+cat << EOF | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
+global
+   log /dev/log    local0
+   log /dev/log    local1 notice
+   chroot /var/lib/haproxy
+   user haproxy
+   group haproxy
+   daemon
 
-printf %s "global
-    log 127.0.0.1 local0 notice
-    maxconn 2000
-    user haproxy
-    group haproxy
 defaults
-    log     global
-    mode    http
-    option  httplog
-    option  dontlognull
-    retries 3
-    option redispatch
-    timeout connect  5000
-    timeout client  10000
-    timeout server  10000
-listen
-    bind 0.0.0.0:80
-    mode http
-    stats enable
-    stats uri /haproxy?stats
-    option httpclose
-    option forwardfor
-    balance roundrobin
-    server 157418-web-01 54.152.246.245:80 check
-    server 157418-web-02 54.144.141.32:80 check
-" >> /etc/haproxy/haproxy.cfg
+   log global
+   mode http
+   option httplog
+   option dontlognull
+   option forwardfor
+   retries 3
+   timeout http-request 10s
+   timeout queue 1m
+   timeout connect 10s
+   timeout client 1m
+   timeout server 1m
+   timeout http-keep-alive 10s
+   timeout check 10s
+   maxconn 3000
+
+frontend http_front
+   bind *:80
+   mode http
+   default_backend http_back
+backend http_back
+   mode http
+   balance roundrobin
+   server 157418-web-01 54.152.246.245:80 check
+   server 157418-web-02 54.144.141.32:80 check
+
+EOF
 
 sudo service haproxy start
