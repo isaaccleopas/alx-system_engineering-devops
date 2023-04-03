@@ -33,8 +33,8 @@ frontend http_front
     option httpclose
     option forwardfor
     balance roundrobin
-    server 54.152.246.245:80 check
-    server 54.144.141.32:80 check
+    server 157418-web-01 54.152.246.245:80 check
+    server 157418-web-02 54.144.141.32:80 check
 " >> /etc/haproxy/haproxy.cfg
 
 sudo service haproxy start
