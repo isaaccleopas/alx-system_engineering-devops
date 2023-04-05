@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# stop any process using port:80
+lsof -i :80 >/dev/null
+sudo kill $(sudo lsof -t -i :80)
+sudo systemctl start nginx

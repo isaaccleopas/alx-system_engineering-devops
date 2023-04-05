@@ -5,16 +5,7 @@
 if lsof -i :80 >/dev/null; then
 	echo "Port 80 is already in use. Stopping the process..."
 	sudo kill -9 $(sudo lsof -t -i :80)
-
 fi
-
-if ! command -v nginx &> /dev/null; then
-	echo "Nginx is not installed. Installing..."
-	sudo apt-get update
-	sudo apt-get install nginx -y
-fi
-
-sudo sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-enabled/default
 
 sudo service nginx start
 echo "Nginx is now listening on port 80."
