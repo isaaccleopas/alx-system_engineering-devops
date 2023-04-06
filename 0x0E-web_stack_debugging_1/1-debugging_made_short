@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# stop any process using port:80
-lsof -i :80 >/dev/null
-sudo kill $(sudo lsof -t -i :80)
-sudo systemctl start nginx
+# configure nginx to run and listen to port 80
+sudo mv /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default.bak
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo servic nginx restart
