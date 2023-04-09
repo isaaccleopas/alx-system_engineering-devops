@@ -1,19 +1,23 @@
 #!/usr/bin/env bash
-# This script displays information about subdomains.
 
-domain_information () {
-    line=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
-    echo "The subdomain $2 is a $line record and points to $3"
-}
+# Usage: ./1-world_wide_web <domain> <subdomain>
+# Display information about subdomains.
 
-if [ "$#" == 1 ]; then
-  domain=$1
-  domain_information "$domain" "www" $(dig +short "www.$domain")
-  domain_information "$domain" "lb-01" $(dig +short "lb-01.$domain")
-  domain_information "$domain" "web-01" $(dig +short "web-01.$domain")
-  domain_information "$domain" "web-02" $(dig +short "web-02.$domain")
-elif [ "$#" == 2 ]; then
-  domain=$1
-  subdomain=$2
-  domain_information "$domain" "$subdomain" $(dig +short "$subdomain.$domain")
+domain="$1"
+subdomain="$2"
+
+# Default subdomains to audit
+subdomains=("www" "lb-01" "web-01" "web-02")
+
+if [[ ! -z $subdomain ]]; then
+  subdomains=($subdomain)
 fi
+
+for sub in "${subdomains[@]}"; do
+  dig_output=$(dig +short A "$sub.$domain")
+  if [[ -n "$dig_output" ]]; then
+    echo "The subdomain $sub is a A record and points to $dig_output"
+  else
+    echo "The subdomain $sub does not have an A record"
+  fi
+done
