@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+"""Displays the todo list of an employee"""
 import requests
 import sys
 
