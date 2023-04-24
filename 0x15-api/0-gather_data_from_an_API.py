@@ -1,8 +1,7 @@
 #!/usr/bin/python3
-"""Displays the to-do list for a given employee ID."""
+"""Displays to-do list information for a given employee ID."""
 import requests
 import sys
-
 
 if __name__ == "__main__":
     url = "https://jsonplaceholder.typicode.com/"
@@ -10,6 +9,6 @@ if __name__ == "__main__":
     todos = requests.get(url + "todos", params={"userId": sys.argv[1]}).json()
 
     completed = [l.get("title") for l in todos if l.get("completed") is True]
-    print("Employee {} is done with tasks ({}/{}):".format(
+    print("Employee {} is done with tasks({}/{}):".format(
         user.get("name"), len(completed), len(todos)))
-    [print("\t{}".format(t)) for t in completed]
+    [print("\t {}".format(t)) for t in completed]
