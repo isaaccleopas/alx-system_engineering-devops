@@ -1,5 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+
 """Displays the to-do list for a given employee ID."""
+
 import requests
 import sys
 
