@@ -2,8 +2,8 @@
 """ Count it! """
 from requests import get
 
-REDDIT = "https://www.reddit.com/"
-HEADERS = {'User-Agent': 'Mozilla/5.0'}
+reddit = "https://www.reddit.com/"
+headers = {'User-Agent': 'Mozilla/5.0'}
 
 
 def count_words(subreddit, word_list, after="", word_dic={}):
@@ -23,26 +23,23 @@ def count_words(subreddit, word_list, after="", word_dic={}):
                 print("{}: {}".format(w[0].lower(), w[1]))
         return None
 
-    url = REDDIT + "r/{}/hot/.json".format(subreddit)
+    url = reddit + "r/{}/hot/.json".format(subreddit)
 
-    params = {
-        'limit': 100,
-        'after': after
-    }
+    params = {'limit': 100, 'after': after}
 
-    r = get(url, headers=HEADERS, params=params, allow_redirects=False)
+    response = get(url, headers=headers,
+                   params=params, allow_redirects=False)
 
-    if r.status_code != 200:
+    if response.status_code != 200:
         return None
 
     try:
-        js = r.json()
+        js = response.json()
 
     except ValueError:
         return None
 
     try:
-
         data = js.get("data")
         after = data.get("after")
         children = data.get("children")
