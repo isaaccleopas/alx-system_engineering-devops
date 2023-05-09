@@ -6,11 +6,7 @@ def top_ten(subreddit):
     """Print the titles of the 10 hottest posts on a given subreddit."""
     url = "https://www.reddit.com/r/{}/hot.json".format(sudreddit)
     headers = {'User-Agent': 'Mozilla/5.0'}
-    response = requests.get(url, headers=headers, params,
-                            allow_redirects=False)
-    params = {
-        "limit": 10
-    }
+    params = {"limit": 10}
     response = requests.get(url, headers=headers, params=params,
                             allow_redirects=False)
     if response.status_code == 404:
