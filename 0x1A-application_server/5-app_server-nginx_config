@@ -2,7 +2,7 @@
 
 server {
     # Listen on port 80
-    listen      80 default_server;
+    listen 80;
 
    # Server's IP serves as the name
     server_name 100.25.152.217;
