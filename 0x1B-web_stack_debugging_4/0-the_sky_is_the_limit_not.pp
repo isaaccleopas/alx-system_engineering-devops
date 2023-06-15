@@ -4,7 +4,6 @@
 exec { 'update-nginx-ulimit':
   command => 'sed -i "s/ULIMIT=\"-n 15\"/ULIMIT=\"-n 4096\"/" /etc/default/nginx',
   path    => '/bin:/usr/bin',
-  onlyif  => 'grep -q "ULIMIT=\"-n 15\"" /etc/default/nginx',
 }
 
 # Restart Nginx after updating the ULIMIT
